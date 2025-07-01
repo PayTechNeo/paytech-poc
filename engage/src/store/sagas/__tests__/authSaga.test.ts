@@ -1,4 +1,4 @@
-import { all, put, takeLatest } from 'redux-saga/effects';
+import { all, takeLatest } from 'redux-saga/effects';
 import { rootSaga, authSagaActions } from '../authSaga';
 import AuthDataService from '../../../services/AuthDataService';
 

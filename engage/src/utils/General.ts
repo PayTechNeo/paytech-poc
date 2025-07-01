@@ -47,11 +47,32 @@ export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeout: number;
+  let timeout: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
+};
+
+export const toggleObjectInArray = <T extends Record<string, any>>(
+  array: T[],
+  object: T,
+  identifier: keyof T
+): T[] => {
+  const index = array.findIndex(item => item[identifier] === object[identifier]);
+  if (index > -1) {
+    return array.filter(item => item[identifier] !== object[identifier]);
+  } else {
+    return [...array, object];
+  }
+};
+
+export const camelToPascalWithSpaces = (str: string): string => {
+  if (!str) return '';
+  return str
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
+    .trim();
 };
 
 export default {
@@ -61,5 +82,7 @@ export default {
   truncateText,
   generateId,
   isValidEmail,
-  debounce
+  debounce,
+  toggleObjectInArray,
+  camelToPascalWithSpaces
 }; 

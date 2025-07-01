@@ -97,7 +97,7 @@ const validationSchema = Yup.object().shape({
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
   [FORM_FIELDS_NAMES.CONFIRM_PASSWORD]: Yup.string()
-    .oneOf([Yup.ref(FORM_FIELDS_NAMES.PASSWORD), null], 'Passwords must match')
+    .oneOf([Yup.ref(FORM_FIELDS_NAMES.PASSWORD), undefined], 'Passwords must match')
     .required('Confirm password is required'),
   [FORM_FIELDS_NAMES.ORGANIZATION_NAME]: Yup.string().required('Organization name is required')
 })
@@ -107,7 +107,8 @@ const SignupPage: React.FC = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const { loginLoadingState, showErrorMessage, navigationPath } = useSelector((state: RootState) => state.auth || {})
+  const auth = useSelector((state: RootState) => state.auth) || {}
+  const { loginLoadingState, showErrorMessage, navigationPath } = auth as any
 
   useEffect(() => {
     // Handle navigation to login page after successful registration
@@ -120,23 +121,15 @@ const SignupPage: React.FC = () => {
 
   const handleSubmit = async (values: SignupFormValues) => {
     try {
-      // Get user agent and IP address
-      const userAgent = navigator.userAgent
-      const ipResponse = await fetch('https://api.ipify.org?format=json')
-      // const ipData = await ipResponse.json()
-      // const ipAddress = ipData.ip
-
       // Dispatch registration action
-      dispatch(authSagaActions.register({
+      (dispatch as any)(authSagaActions.register({
         values: {
           firstName: values[FORM_FIELDS_NAMES.FIRSTNAME],
           lastName: values[FORM_FIELDS_NAMES.LASTNAME],
           email: values[FORM_FIELDS_NAMES.EMAIL],
           password: values[FORM_FIELDS_NAMES.PASSWORD],
           organizationName: values[FORM_FIELDS_NAMES.ORGANIZATION_NAME]
-        },
-        // userAgent,
-        // ipAddress
+        }
       }))
     } catch (err: any) {
       dispatch(authActions.setShowErrorMessage("Error during registration: " + err.message))

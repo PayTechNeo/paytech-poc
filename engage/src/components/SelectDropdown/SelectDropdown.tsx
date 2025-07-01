@@ -4,7 +4,7 @@ import DropdownModal from "../dropdownModal";
 import Input from "../input/Input";
 import { useDispatch } from "react-redux";
 import useDebounced from "../../hooks/useDebounced";
-import { SelectDropdownProps, Option } from "../../types/selectDropdown";
+import type { SelectDropdownProps, Option } from "../../types/selectDropdown";
 
 
 const getSelectOptions = (params: any) => {

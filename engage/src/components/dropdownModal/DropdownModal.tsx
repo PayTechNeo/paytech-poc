@@ -3,7 +3,7 @@ import Checkbox from "../checkbox/Checkbox";
 import { Button } from "../button/Button";
 import { BUTTON_VARIANTS } from "../button/Button";
 import Icons from "../icons/Icons";
-import { DropdownModalProps, Option } from "../../types/selectDropdown";
+import type { DropdownModalProps, Option } from "../../types/selectDropdown";
 
 // Mock constants - you'll need to replace these with actual imports
 const SOZEN_COLORS = {

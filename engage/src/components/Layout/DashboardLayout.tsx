@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import { Bars3Icon } from '@heroicons/react/24/outline'
 import Sidebar from '../Sidebar'
 import Navbar from '../Navbar'
 

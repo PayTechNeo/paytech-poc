@@ -1,5 +1,7 @@
-import { combineReducers, Reducer, AnyAction } from 'redux'
-import { createSlice, Slice } from '@reduxjs/toolkit'
+import { combineReducers } from 'redux'
+import type { Reducer, AnyAction } from 'redux'
+import { createSlice } from '@reduxjs/toolkit'
+import type { Slice } from '@reduxjs/toolkit'
 
 interface ReducerManager {
   reduce: (state: any, action: AnyAction) => any

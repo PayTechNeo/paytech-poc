@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { TableBody, TableHeader } from '.';
+import TableHeader from './TableHeader'
+import TableBody from './TableBody'
 import Pagination from '../Pagination/index';
-import { Column, SelectProps, PaginationProps, TableProps, SortingProps } from './types';
+import type { TableProps } from './types';
 
 const VARIANTS = {
   SM: 'sm',

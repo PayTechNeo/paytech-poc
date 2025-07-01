@@ -16,7 +16,10 @@ const store = configureStore({
         main: mainReducer,
         users: usersReducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
+    middleware: (getDefaultMiddleware) => 
+        getDefaultMiddleware({ 
+            thunk: false
+        }).concat(sagaMiddleware)
 })
 
 // Run all sagas

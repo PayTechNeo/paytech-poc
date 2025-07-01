@@ -10,6 +10,7 @@ import { Button } from '../components/button'
 import { Input } from '../components/input'
 import type { RootState } from '../types'
 
+
 interface LoginFormValues {
   [FORM_FIELDS_NAMES.EMAIL]: string
   [FORM_FIELDS_NAMES.PASSWORD]: string
@@ -27,7 +28,8 @@ const validationSchema = Yup.object().shape({
 const LoginPage: React.FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isAuthenticated, loginLoadingState, showErrorMessage, showSuccessMessage, navigationPath } = useSelector((state: RootState) => state.auth || {})
+  const auth = useSelector((state: RootState) => state.auth) || {}
+  const { loginLoadingState, showErrorMessage, showSuccessMessage, navigationPath } = auth as any
   
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
@@ -50,7 +52,7 @@ const LoginPage: React.FC = () => {
   }, [navigationPath, navigate, dispatch])
 
   const handleSubmit = (values: LoginFormValues) => {
-    dispatch(authSagaActions.login(values))
+    dispatch(authSagaActions.login(values) as any)
   }
 
   return (

@@ -26,10 +26,6 @@ interface UpdateUserCredentials extends CreateUserCredentials {
   id: string
 }
 
-interface DeleteUserRequest {
-  id: string
-}
-
 interface ChangePasswordRequest {
   currentPassword: string
   newPassword: string

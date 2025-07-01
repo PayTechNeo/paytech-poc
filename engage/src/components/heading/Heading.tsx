@@ -1,5 +1,6 @@
 import React from 'react'
-import { HEADING, HeadingType } from './Constants';
+import { HEADING } from './Constants';
+import type { HeadingType } from './Constants';
 
 interface HeadingProps {
   type?: HeadingType;

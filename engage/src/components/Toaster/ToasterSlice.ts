@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type { ToasterVariantType } from './constants';
 
 interface Notification {
@@ -10,52 +12,27 @@ interface ToasterState {
     notifications: Notification[];
 }
 
-interface AddNotificationAction {
-    type: 'toaster/addNotifications';
-    payload: Omit<Notification, 'id'>;
-}
-
-interface RemoveNotificationAction {
-    type: 'toaster/removeNotification';
-    payload: number;
-}
-
-type ToasterAction = AddNotificationAction | RemoveNotificationAction;
-
 const initialState: ToasterState = {
     notifications: []
 }
 
-const toasterReducer = (state: ToasterState = initialState, action: ToasterAction): ToasterState => {
-    switch (action.type) {
-        case 'toaster/addNotifications':
-            return {
-                ...state,
-                notifications: [...state.notifications, {
-                    id: Date.now(),
-                    ...action.payload
-                }]
-            }
-        case 'toaster/removeNotification':
-            return {
-                ...state,
-                notifications: state.notifications.filter(
-                    notification => notification.id !== action.payload
-                )
-            }
-        default:
-            return state
+const toasterSlice = createSlice({
+    name: 'toaster',
+    initialState,
+    reducers: {
+        addNotifications: (state, action: PayloadAction<Omit<Notification, 'id'>>) => {
+            state.notifications.push({
+                id: Date.now(),
+                ...action.payload
+            });
+        },
+        removeNotification: (state, action: PayloadAction<number>) => {
+            state.notifications = state.notifications.filter(
+                notification => notification.id !== action.payload
+            );
+        }
     }
-}
+});
 
-export const addNotifications = (payload: Omit<Notification, 'id'>) => ({
-    type: 'toaster/addNotifications' as const,
-    payload
-})
-
-export const removeNotification = (id: number) => ({
-    type: 'toaster/removeNotification' as const,
-    payload: id
-})
-
-export default toasterReducer 
+export const { addNotifications, removeNotification } = toasterSlice.actions;
+export default toasterSlice.reducer; 

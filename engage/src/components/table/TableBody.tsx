@@ -1,7 +1,7 @@
 import React from 'react'
 import Checkbox from '../checkbox/Checkbox'
 import General from '../../utils/General'
-import { Column, SelectProps } from './types'
+import type { Column, SelectProps } from './types'
 
 interface TableBodyProps {
   coloumns: Column[];

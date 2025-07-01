@@ -13,7 +13,6 @@ import {
   DocumentCheckIcon,
   Cog6ToothIcon, 
   ArrowRightOnRectangleIcon,
-  XMarkIcon,
   InformationCircleIcon,
   BookOpenIcon,
   QuestionMarkCircleIcon

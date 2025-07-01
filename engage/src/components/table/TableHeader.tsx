@@ -1,7 +1,7 @@
 import React from 'react';
 import Icons from '../icons/Icons';
 import Checkbox from '../checkbox/Checkbox';
-import { Column, SelectProps, SortingProps } from './types';
+import type { Column, SelectProps, SortingProps } from './types';
 
 interface TableHeaderProps {
   tableHeaderCustomclasses?: string;
