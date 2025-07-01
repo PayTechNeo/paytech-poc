@@ -64,14 +64,34 @@ const financesData = {
 
 const financesOptions = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
-    legend: { position: 'top' as const },
+    legend: { 
+      position: 'top' as const,
+      labels: {
+        boxWidth: 12,
+        padding: 10,
+        font: {
+          size: 12
+        }
+      }
+    },
   },
   scales: {
     y: {
       beginAtZero: true,
       ticks: {
-        callback: (value: any) => `€${value}`
+        callback: (value: any) => `€${value}`,
+        font: {
+          size: 11
+        }
+      }
+    },
+    x: {
+      ticks: {
+        font: {
+          size: 11
+        }
       }
     }
   }
@@ -102,7 +122,7 @@ const performanceStatus = {
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-3 sm:p-4 md:p-6 max-w-7xl mx-auto">
       <DashboardHeader
         logo={Logo}
         name="The Little Market"
@@ -110,24 +130,26 @@ const Dashboard: React.FC = () => {
         description="Description of service (AI pulled)"
         onSalesforceClick={() => window.open('https://salesforce.com', '_blank')}
       />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Left column */}
-        <div className="md:col-span-2 flex flex-col gap-6">
+        <div className="lg:col-span-2 flex flex-col gap-4 sm:gap-6">
           <RecommendationsCard recommendations={recommendations} />
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="font-semibold mb-2">Finances</h3>
-            <FinanceLineChart data={financesData} options={financesOptions} />
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+            <h3 className="font-semibold mb-2 sm:mb-4 text-sm sm:text-base">Finances</h3>
+            <div className="h-64 sm:h-80">
+              <FinanceLineChart data={financesData} options={financesOptions} />
+            </div>
           </div>
         </div>
         {/* Right column */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4 sm:gap-6">
           <ProductsCard products={products} />
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4">
             {stats.map((stat, idx) => (
               <StatsCard key={idx} icon={stat.icon} value={stat.value} label={stat.label} />
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <CardPieChart data={pieData} title="Card Usage" />
             <CardPieChart data={pieData} title="Spend Statistics" />
           </div>

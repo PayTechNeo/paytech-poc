@@ -316,9 +316,9 @@ const SelectDropdown: React.FC<SelectDropdownProps> = ({
             toggleIcon
               ? toggleIcon
               : showToggle && (
-                  <div onClick={handleIconRotation} className="cursor-pointer">
+                  <div onClick={handleIconRotation} className="cursor-pointer p-1">
                     <ChevronDownIcon
-                      className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
+                      className={`h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform duration-200 ${
                         isOpen ? 'rotate-180' : ''
                       }`}
                       aria-hidden="true"

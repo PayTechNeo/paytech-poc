@@ -9,7 +9,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
-      <div className="flex justify-between items-center h-16 px-4">
+      <div className="flex justify-between items-center h-14 sm:h-16 px-3 sm:px-4">
         {/* Left side - Mobile menu button and logo */}
         <div className="flex items-center">
           {/* Mobile menu button */}
@@ -17,21 +17,21 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
             onClick={onMenuClick}
             className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
           >
-            <Bars3Icon className="h-6 w-6" />
+            <Bars3Icon className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
           
           {/* Logo */}
-          <div className="flex-shrink-0 ml-4 md:ml-0">
+          <div className="flex-shrink-0 ml-2 sm:ml-4 md:ml-0">
             <img 
               src={Logo} 
               alt="NeoEngage Logo" 
-              className="h-8 w-auto"
+              className="h-6 w-auto sm:h-8"
             />
           </div>
         </div>
 
         {/* Right side - Navigation options, notifications and profile */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           {/* Navigation options */}
           <div className="hidden md:block">
             <div className="flex items-baseline space-x-4">
@@ -49,13 +49,13 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
 
           {/* Notifications bell */}
           <button className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-            <BellIcon className="h-5 w-5" />
+            <BellIcon className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
 
           {/* Profile picture */}
           <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-colors duration-200 cursor-pointer">
-              <UserIcon className="h-5 w-5 text-gray-600" />
+            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-colors duration-200 cursor-pointer">
+              <UserIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             </div>
           </div>
         </div>

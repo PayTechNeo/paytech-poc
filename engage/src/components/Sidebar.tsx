@@ -70,12 +70,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
 
       {/* Sidebar */}
       <div className={`
-        w-64 bg-[#0f084b] shadow-lg transform transition-transform duration-300 ease-in-out
+        fixed md:relative w-64 bg-[#0f084b] shadow-lg transform transition-transform duration-300 ease-in-out z-50
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
+        h-full
       `}>
         <div className="flex flex-col h-full">
           {/* Main Navigation Items */}
-          <nav className="mt-5 flex-1 px-2 space-y-1">
+          <nav className="mt-5 flex-1 px-2 space-y-1 overflow-y-auto scrollbar-hide">
             {navigation.map((item) => {
               const Icon = item.icon
               const isActive = location.pathname === item.href
@@ -89,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                       onToggle()
                     }
                   }}
-                  className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
+                  className={`group flex items-center px-2 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
                     isActive
                       ? 'bg-[#1a0f6b] text-white'
                       : 'text-gray-300 hover:bg-[#1a0f6b] hover:text-white'
@@ -98,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                   <span className="mr-3 flex-shrink-0 h-6 w-6">
                     <Icon className="h-6 w-6" />
                   </span>
-                  {item.name}
+                  <span className="truncate">{item.name}</span>
                 </Link>
               )
             })}
@@ -124,7 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                       onToggle()
                     }
                   }}
-                  className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
+                  className={`group flex items-center px-2 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
                     isActive
                       ? 'bg-[#1a0f6b] text-white'
                       : 'text-gray-300 hover:bg-[#1a0f6b] hover:text-white'
@@ -133,7 +134,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                   <span className="mr-3 flex-shrink-0 h-6 w-6">
                     <Icon className="h-6 w-6" />
                   </span>
-                  {item.name}
+                  <span className="truncate">{item.name}</span>
                 </Link>
               )
             })}
@@ -143,10 +144,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
           <div className="flex-shrink-0 flex border-t border-[#1a0f6b] p-4">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-md transition-colors duration-200"
+              className="w-full flex items-center justify-center px-4 py-3 text-sm font-medium text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-md transition-colors duration-200"
             >
               <ArrowRightOnRectangleIcon className="mr-2 h-5 w-5" />
-              Logout
+              <span className="truncate">Logout</span>
             </button>
           </div>
         </div>

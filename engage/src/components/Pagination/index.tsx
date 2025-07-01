@@ -23,7 +23,7 @@ const Pagination: React.FC<PaginationProps> = ({
     }, [currentPage, onPageChangeCb])
 
     const renderPages = () => {
-        const maxPagesToShow = 5;
+        const maxPagesToShow = window.innerWidth < 640 ? 3 : 5; // Show fewer pages on mobile
         const maxPages = Math.min(totalPages, maxPagesToShow);
         const pages = [];
 
@@ -41,7 +41,7 @@ const Pagination: React.FC<PaginationProps> = ({
                     <Button
                         onClickCb={() => setCurrentPage(i)}
                         variant={i === currentPage ? BUTTON_VARIANTS.CONTAINED : BUTTON_VARIANTS.OUTLINED_GRAY}
-                        className="fs-14 flex items-center justify-center px-2 h-7"
+                        className="fs-14 flex items-center justify-center px-2 sm:px-3 h-8 sm:h-9 text-xs sm:text-sm"
                     >
                         {i}
                     </Button>
@@ -53,18 +53,23 @@ const Pagination: React.FC<PaginationProps> = ({
     };
 
     return (
-        <div className='my-2 flex justify-between items-center'>
-            <Label color="gray-500" fontSize="sm" fontWeight='bold'>showing {((currentPage - 1) * limit) + 1} to {Math.min(currentPage * limit, totalCount)} of {totalCount}</Label>
-            <nav className="">
-                <ul className="flex text-sm justify-between gap-[10px]">
+        <div className='my-2 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0'>
+            <div className="text-xs sm:text-sm">
+                <Label color="gray-500" fontSize="sm" fontWeight='bold'>
+                    showing {((currentPage - 1) * limit) + 1} to {Math.min(currentPage * limit, totalCount)} of {totalCount}
+                </Label>
+            </div>
+            <nav className="w-full sm:w-auto">
+                <ul className="flex text-sm justify-center sm:justify-between gap-1 sm:gap-[10px]">
                     <li>
                         <Button 
                           onClickCb={() => setCurrentPage(prev => Math.max(1, prev - 1))} 
                           variant={BUTTON_VARIANTS.OUTLINED_GRAY} 
-                          className={`fs-14 flex items-center justify-center px-3 h-7 bg-white border border-gray-300 rounded ${currentPage === 1 ? "text-gray-500 cursor-not-allowed" : ""}`}
+                          className={`fs-14 flex items-center justify-center px-2 sm:px-3 h-8 sm:h-9 bg-white border border-gray-300 rounded text-xs sm:text-sm ${currentPage === 1 ? "text-gray-500 cursor-not-allowed" : ""}`}
                           disabled={currentPage === 1}
                         >
-                          Previous
+                          <span className="hidden sm:inline">Previous</span>
+                          <span className="sm:hidden">Prev</span>
                         </Button>
                     </li>
                     {renderPages()}
@@ -72,10 +77,11 @@ const Pagination: React.FC<PaginationProps> = ({
                         <Button 
                           onClickCb={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
                           variant={BUTTON_VARIANTS.OUTLINED_GRAY} 
-                          className={`fs-14 flex items-center justify-center px-3 h-7 bg-white border border-gray-300 rounded ${currentPage === totalPages ? "text-gray-500 cursor-not-allowed" : ""}`}
+                          className={`fs-14 flex items-center justify-center px-2 sm:px-3 h-8 sm:h-9 bg-white border border-gray-300 rounded text-xs sm:text-sm ${currentPage === totalPages ? "text-gray-500 cursor-not-allowed" : ""}`}
                           disabled={currentPage === totalPages}
                         >
-                          Next
+                          <span className="hidden sm:inline">Next</span>
+                          <span className="sm:hidden">Next</span>
                         </Button>
                     </li>
                 </ul>

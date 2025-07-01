@@ -5,11 +5,11 @@ interface RecommendationsCardProps {
 }
 
 const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ recommendations }) => (
-  <div className="bg-white rounded-lg shadow p-6 mb-6">
-    <h2 className="font-semibold mb-2">Actionable recommendations:</h2>
-    <ol className="list-decimal ml-5 text-gray-700">
+  <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+    <h2 className="font-semibold mb-2 sm:mb-4 text-sm sm:text-base">Actionable recommendations:</h2>
+    <ol className="list-decimal ml-4 sm:ml-5 text-gray-700 space-y-2 sm:space-y-3">
       {recommendations.map((rec, idx) => (
-        <li key={idx} className="mb-2">
+        <li key={idx} className="text-sm sm:text-base leading-relaxed">
           <span className="font-bold">{rec.title}</span> {rec.description}
         </li>
       ))}

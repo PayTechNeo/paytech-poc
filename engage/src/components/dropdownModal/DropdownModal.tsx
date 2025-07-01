@@ -114,13 +114,13 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
       onMouseLeave={onMouseLeaveCb}
       className={`absolute z-[9999] mt-1 ${
         styleprops ? "w-[148px]" : "w-full"
-      } bg-white rounded-md shadow-sm right-0 max-h-[250px] overflow-hidden ${
+      } bg-white rounded-md shadow-sm right-0 max-h-[200px] sm:max-h-[250px] overflow-hidden ${
         openDirection === "top" && "bottom-[50px]"
       }`}
     >
       <div
         id="dropdown-modal-options-container"
-        className="max-h-[200px] overflow-y-auto"
+        className="max-h-[150px] sm:max-h-[200px] overflow-y-auto scrollbar-hide"
       >
         {allOptions.length > 0 ? (
           <>
@@ -128,7 +128,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
               <Button
                 id="dropdown-modal-select-all"
                 variant={BUTTON_VARIANTS.TEXT}
-                className="w-full bg-gray-100 rounded-md !text-black !justify-start"
+                className="w-full bg-gray-100 rounded-md !text-black !justify-start text-sm"
                 onClickCb={() => {
                   if (multiSelectValues.length === allOptions.length) {
                     setMultiSelectValues([]);
@@ -141,7 +141,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
                   id="dropdown-modal-select-all-checkbox"
                   checked={multiSelectValues.length === allOptions.length}
                 />
-                Select All
+                <span className="text-sm">Select All</span>
               </Button>
             )}
 
@@ -150,11 +150,11 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
                 <Button
                   id="dropdown-modal-add-new-btn"
                   variant={BUTTON_VARIANTS.CONTAINED}
-                  className="w-full flex item-end px-4 py-2 hover:bg-gray-100 text-blue-600 font-medium"
+                  className="w-full flex item-end px-3 sm:px-4 py-2 hover:bg-gray-100 text-blue-600 font-medium text-sm"
                   onClickCb={onAddNewCb || (() => {})}
                 >
                   <Icons iconName="addIcon" color={SOZEN_COLORS.GRAY} />
-                  {addNewOptBtnLable}
+                  <span className="text-sm">{addNewOptBtnLable}</span>
                 </Button>
               </div>
             )}
@@ -164,7 +164,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
                 <Button
                   id={`dropdown-modal-option-${option?.value || index}`}
                   variant={BUTTON_VARIANTS.TEXT}
-                  className="w-full hover:bg-gray-100 rounded-md !text-black !justify-start"
+                  className="w-full hover:bg-gray-100 rounded-md !text-black !justify-start text-sm"
                   onClickCb={() => handleMultiSelectChange(option)}
                 >
                   {option?.value && (
@@ -178,19 +178,19 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
                     />
                   )}
                   {option.iconName && <Icons iconName={option.iconName} />}
-                  {option.label}
+                  <span className="text-sm truncate">{option.label}</span>
                 </Button>
               ) : (
                 renderOption?.(option, selectCb) ?? (
                   <Button
                     id={`dropdown-modal-option-${option?.value || index}`}
                     variant={BUTTON_VARIANTS.TEXT}
-                    className="w-full hover:bg-gray-100 rounded-md !text-black !justify-start"
+                    className="w-full hover:bg-gray-100 rounded-md !text-black !justify-start text-sm"
                     onClickCb={() => selectCb(option)}
                     disabled={disabled}
                   >
                     {option.iconName && <Icons iconName={option.iconName} />}
-                    {option.label}
+                    <span className="text-sm truncate">{option.label}</span>
                   </Button>
                 )
               );
@@ -213,7 +213,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
         ) : (
           <div
             id="dropdown-modal-empty"
-            className="cursor-pointer py-2 px-4 text-gray-500"
+            className="cursor-pointer py-2 px-4 text-gray-500 text-sm"
           >
             No Result Found
           </div>
@@ -228,7 +228,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
           <Button
             id="dropdown-modal-done-button"
             variant={BUTTON_VARIANTS.CONTAINED}
-            className="font-bold"
+            className="font-bold text-sm px-3 sm:px-4 py-2"
             onClickCb={() => {
               selectCb(multiSelectValues);
               onCloseCb();

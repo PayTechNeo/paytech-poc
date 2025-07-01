@@ -27,7 +27,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const baseButtonClass =
-  'inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-150 ease-in-out'
+  'inline-flex items-center justify-center px-3 sm:px-4 py-2 sm:py-2.5 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-150 ease-in-out min-h-[44px] sm:min-h-[40px]'
 
 const variantClasses: Record<ButtonVariant, string> = {
   [BUTTON_VARIANTS.CONTAINED]: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500',
