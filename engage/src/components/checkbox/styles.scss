@@ -1,0 +1,57 @@
+@import '../../styles/global.scss';
+
+#checkbox:checked + label > div {
+	border-color: transparent;
+}
+
+#checkbox:checked + label > div::after {
+	content: '';
+	display: block;
+	width: inherit;
+	height: inherit;
+	background-color: $cyan-blue;
+	border-radius: 2px;
+}
+
+#checkbox:checked + label > div::after {
+	content: '';
+	position: absolute;
+    font-family: sans-serif;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 1.2rem;
+	color: #ffffff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff" stroke="%23ffffff" stroke-width="1"><path fill="none" d="M0 0h24v24H0z"/><path d="M9 16.2l-3.7-3.7L4 13l5 5 10-10-1.4-1.4L9 16.2z"/></svg>');
+}
+
+.checkbox-container {
+  @include flex-center;
+  gap: 8px;
+  
+  .checkbox {
+    @extend .checkbox-wrapper;
+    
+    input {
+      @extend .checkbox-input;
+    }
+    
+    label {
+      @extend .checkbox-label;
+      padding: 4px 8px;
+      
+      &:hover {
+        background-color: $secondary-color;
+        border-radius: 4px;
+      }
+    }
+  }
+  
+  .checkbox-label-text {
+    font-size: 14px;
+    color: $dark-gray;
+  }
+}
