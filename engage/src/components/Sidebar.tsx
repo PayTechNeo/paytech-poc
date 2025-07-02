@@ -10,12 +10,7 @@ import {
   ChartBarIcon,
   ShieldCheckIcon,
   ChatBubbleLeftRightIcon,
-  DocumentCheckIcon,
-  Cog6ToothIcon, 
   ArrowRightOnRectangleIcon,
-  InformationCircleIcon,
-  BookOpenIcon,
-  QuestionMarkCircleIcon
 } from '@heroicons/react/24/outline'
 
 interface SidebarItem {
@@ -33,14 +28,6 @@ const navigation: SidebarItem[] = [
   { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
   { name: 'Compliance', href: '/compliance', icon: ShieldCheckIcon },
   { name: 'Messages', href: '/messages', icon: ChatBubbleLeftRightIcon },
-]
-
-const bottomNavigation: SidebarItem[] = [
-  { name: 'Users & Terms', href: '/users', icon: DocumentCheckIcon },
-  { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
-  { name: 'About', href: '/about', icon: InformationCircleIcon },
-  { name: 'Resources', href: '/resources', icon: BookOpenIcon },
-  { name: 'Help', href: '/help', icon: QuestionMarkCircleIcon },
 ]
 
 interface SidebarProps {
@@ -104,41 +91,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
               )
             })}
           </nav>
-
-          {/* Divider */}
-          <div className="border-t border-[#1a0f6b] px-2 py-4">
-            <div className="h-px bg-[#1a0f6b]"></div>
-          </div>
-
-          {/* Bottom Navigation Items */}
-          <div className="px-2 py-4 space-y-1">
-            {bottomNavigation.map((item) => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.href
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => {
-                    // Close sidebar on mobile after navigation
-                    if (window.innerWidth < 768) {
-                      onToggle()
-                    }
-                  }}
-                  className={`group flex items-center px-2 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
-                    isActive
-                      ? 'bg-[#1a0f6b] text-white'
-                      : 'text-gray-300 hover:bg-[#1a0f6b] hover:text-white'
-                  }`}
-                >
-                  <span className="mr-3 flex-shrink-0 h-6 w-6">
-                    <Icon className="h-6 w-6" />
-                  </span>
-                  <span className="truncate">{item.name}</span>
-                </Link>
-              )
-            })}
-          </div>
 
           {/* Logout Button */}
           <div className="flex-shrink-0 flex border-t border-[#1a0f6b] p-4">

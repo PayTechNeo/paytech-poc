@@ -162,13 +162,12 @@ function* deleteUserAsync(action: any) {
   yield put(usersActions.setLoginLoadingState({ state: 'LOADING', message: 'Deleting user...' }))
   
   try {
-    const response: { data: any } = yield call(usersDataService.deleteUser, action.payload.id)
+    yield call(usersDataService.deleteUser, action.payload.id)
     yield put(addNotifications({ 
       message: 'User deleted successfully', 
       variant: TOASTER_VARIANT.SUCCESS 
     }))
     yield call(getAllUsersAsync)
-    console.log("Delete response:", response)
   } catch (error) {
     console.log("Delete error:", error)
   } finally {
@@ -180,7 +179,6 @@ function* getLoggedInUserInfoAsync() {
   yield put(usersActions.setLoginLoadingState({ state: 'LOADING', message: 'Loading...' }))
   try {
     const response: { data: User } = yield call(usersDataService.getLoggedinUsersInfo)
-    console.log("dffffff",response);
     
     yield put(usersActions.setLoggedInUserInfo(response?.data))
   } catch (error: any) {

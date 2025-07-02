@@ -21,7 +21,6 @@ const Icons = ({ iconName, color, transformScale = 1, rotateDeg = 0, style, heig
 	const icon = icons[iconName];
 
 	if (!icon) {
-		console.error(`Icon with name "${iconName}" not found.`);
 		return null;
 	}
 	return React.cloneElement(icon(iconProps), iconProps);

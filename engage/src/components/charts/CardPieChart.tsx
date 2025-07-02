@@ -12,17 +12,19 @@ const CardPieChart: React.FC<CardPieChartProps> = ({ data, options, title }) => 
   const defaultOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
+    cutout: '80%',
     plugins: {
       legend: {
         position: 'bottom' as const,
         labels: {
-          boxWidth: 12,
+          boxWidth: 18,
           padding: 8,
           font: {
             size: 11
-          }
+          },
+
         }
-      }
+      },
     }
   };
 
