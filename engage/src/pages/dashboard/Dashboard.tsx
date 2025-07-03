@@ -61,7 +61,9 @@ const financesOptions = {
     y: {
       beginAtZero: true,
       ticks: {
-        callback: (value: any) => `€${value}`,
+        callback: function(tickValue: string | number) {
+          return `€${tickValue}`;
+        },
         font: {
           size: 11
         }

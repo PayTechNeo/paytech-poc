@@ -1,10 +1,8 @@
 import axios from 'axios';
+import type { AxiosResponse, AxiosRequestConfig } from 'axios';
 
-interface Config {
-  [key: string]: any;
-  headers?: Record<string, string>;
-  withCredentials?: boolean;
-  data?: any;
+interface Config extends AxiosRequestConfig {
+  [key: string]: unknown;
 }
 
 // Extend ImportMeta interface for Vite
@@ -31,7 +29,7 @@ class DataService {
     return false;
   }
 
-  get(relativeUrl: string, config: Config = {}): Promise<any> {
+  get(relativeUrl: string, config: Config = {}): Promise<AxiosResponse> {
     try {
       return axios.get(this._generateUrl(relativeUrl), this._config(config));
     } catch (error) {
@@ -40,7 +38,7 @@ class DataService {
     }
   }
 
-  post(relativeUrl: string, data: any = null, config: Config = {}): Promise<any> {
+  post(relativeUrl: string, data: unknown = null, config: Config = {}): Promise<AxiosResponse> {
     try {
       return axios.post(this._generateUrl(relativeUrl), data, this._config(config));
     } catch (error) {
@@ -49,7 +47,7 @@ class DataService {
     }
   }
 
-  put(relativeUrl: string, data: any = null, config: Config = {}): Promise<any> {
+  put(relativeUrl: string, data: unknown = null, config: Config = {}): Promise<AxiosResponse> {
     try {
       return axios.put(this._generateUrl(relativeUrl), data, this._config(config));
     } catch (error) {
@@ -58,7 +56,7 @@ class DataService {
     }
   }
 
-  patch(relativeUrl: string, data: any = null, config: Config = {}): Promise<any> {
+  patch(relativeUrl: string, data: unknown = null, config: Config = {}): Promise<AxiosResponse> {
     try {
       return axios.patch(this._generateUrl(relativeUrl), data, this._config(config));
     } catch (error) {
@@ -67,7 +65,7 @@ class DataService {
     }
   }
 
-  delete(relativeUrl: string, data: any = null, config: Config = {}): Promise<any> {
+  delete(relativeUrl: string, data: unknown = null, config: Config = {}): Promise<AxiosResponse> {
     try {
       if (data) {
         return axios.delete(this._generateUrl(relativeUrl), { 
@@ -113,14 +111,15 @@ class DataService {
     };
   }
 
-  private _handleError(error: any, method: string, url: string): void {
+  private _handleError(error: unknown, method: string, url: string): void {
     console.error(`DataService ${method} error for ${url}:`, error);
     
-    if (error.code === 'ERR_NETWORK') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ERR_NETWORK') {
       console.error('Network error - possible CORS issue or server unavailable');
-    } else if (error.response) {
-      console.error('Response error:', error.response.status, error.response.data);
-    } else if (error.request) {
+    } else if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { response: { status: number; data: unknown } };
+      console.error('Response error:', axiosError.response.status, axiosError.response.data);
+    } else if (error && typeof error === 'object' && 'request' in error) {
       console.error('Request error - no response received');
     }
   }

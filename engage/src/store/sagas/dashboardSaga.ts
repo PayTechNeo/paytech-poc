@@ -6,8 +6,8 @@ import { dashboardActions } from '../slices/dashboardSlice'
 
 interface DashboardPayload {
   type: string
-  payload: any
-  [key: string]: any
+  payload: Record<string, unknown>
+  [key: string]: unknown
 }
 
 // Action types
@@ -17,18 +17,19 @@ const DASHBOARD_TYPES = {
 
 // Action creators
 export const dashboardSagaActions = {
-  getDashboardData: (payload: any): DashboardPayload => ({
+  getDashboardData: (payload: Record<string, unknown>): DashboardPayload => ({
     type: DASHBOARD_TYPES.GETDASHBOARDDATA,
     payload
   }),
 }
 
 // Dashboard saga
-function* getDashboardDataAsync(_action: DashboardPayload): Generator<any, void, any> {
+function* getDashboardDataAsync(): Generator<unknown, void, unknown> {
   yield put(dashboardActions.setDashboardLoading(true))
 
   try {
-    const response = yield dashboardDataService.getDashboardData()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response: any = yield dashboardDataService.getDashboardData()
 
     if (response.status === 200 || response.status === 201) {
       const organizationData = response.data
@@ -44,9 +45,11 @@ function* getDashboardDataAsync(_action: DashboardPayload): Generator<any, void,
     } else {
       throw new Error('Failed to fetch organization data')
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     
-    const errorMessage = error?.response?.data?.message || 'Failed to load organization data. Please try again.'
+    const errorMessage = error && typeof error === 'object' && 'response' in error 
+      ? (error as { response: { data: { message: string } } }).response?.data?.message 
+      : 'Failed to load organization data. Please try again.'
     
     // Set error state
     yield put(dashboardActions.setDashboardError(errorMessage))

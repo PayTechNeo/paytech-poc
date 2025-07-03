@@ -6,8 +6,29 @@ import { useDispatch } from "react-redux";
 import useDebounced from "../../hooks/useDebounced";
 import type { SelectDropdownProps, Option } from "../../types/selectDropdown";
 
+interface SelectOptionsParams {
+  url: string;
+  params: {
+    page: number;
+    limit: number;
+    name?: string;
+  };
+  labelKey?: string;
+  valueKey?: string;
+  labelKey2?: string;
+  addOptions: (options: Option[]) => void;
+  handlePaginationChange: (paginationObj: Record<string, unknown>) => void;
+  onHasMoreUpdate: (hasMore: boolean) => void;
+}
 
-const getSelectOptions = (params: any) => {
+interface PaginationObject {
+  pageNumber?: number;
+  limit?: number;
+  search?: string;
+  totalRecords?: number;
+}
+
+const getSelectOptions = (params: SelectOptionsParams) => {
   return { type: 'GET_SELECT_OPTIONS', payload: params };
 };
 
@@ -70,19 +91,23 @@ const SelectDropdown: React.FC<SelectDropdownProps> = ({
     setHasMore(true);
   }, [searchText]);
 
+  // Memoize the value comparison to avoid complex dependency arrays
+  const valueKeyMemo = useMemo(() => (value as Option)?.value, [value]);
+  const valueLength = useMemo(() => (value as Option[])?.length, [value]);
+
   useEffect(() => {
     if (isAsync) return;
     if (isMultiSelect) return;
-    const selectedOpt = options.find((opt) => opt?.value === (value as Option)?.value);
+    const selectedOpt = options.find((opt) => opt?.value === valueKeyMemo);
     setSelectedOption(selectedOpt || null);
-  }, [(value as Option)?.value, isAsync, isMultiSelect]);
+  }, [valueKeyMemo, isAsync, isMultiSelect, options]);
 
   useEffect(() => {
     if (!isAsync) return;
     if (!isMultiSelect) return;
     const selectedOpt = options?.filter((opt) => (value as Option[])?.includes(opt));
     setSelectedOption(selectedOpt || []);
-  }, [(value as Option[])?.length, isMultiSelect, isAsync]);
+  }, [valueLength, isMultiSelect, isAsync, options, value]);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -128,7 +153,7 @@ const SelectDropdown: React.FC<SelectDropdownProps> = ({
   useEffect(() => {
     if (!isAsync) return;
     setFilteredOptions(dropdownOptions);
-  }, [dropdownOptions.length, isAsync]);
+  }, [dropdownOptions, isAsync]);
 
   useEffect(() => {
     if (!url || url?.includes("null")) return;
@@ -184,7 +209,7 @@ const SelectDropdown: React.FC<SelectDropdownProps> = ({
     }));
   };
 
-  const handlePaginationChange = (paginationObj: any) => {
+  const handlePaginationChange = (paginationObj: PaginationObject) => {
     setPaginationState((prev) => ({ ...prev, ...paginationObj }));
   };
 

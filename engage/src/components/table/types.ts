@@ -1,18 +1,18 @@
 import React from 'react';
 
-export interface Column {
+export interface Column<T = unknown> {
   field: string;
   label: React.ReactNode;
-  renderLogic?: (row: any) => React.ReactNode;
+  renderLogic?: (row: T) => React.ReactNode;
   color?: string;
   sort?: string;
 }
 
-export interface SelectProps {
+export interface SelectProps<T = unknown> {
   isSelectAll?: boolean;
-  onSelectAll?: (rows: any[]) => void;
+  onSelectAll?: (rows: T[]) => void;
   isSelectable?: boolean;
-  onSelectRowsCb?: (rows: any[]) => void;
+  onSelectRowsCb?: (rows: T[]) => void;
   selectIdentifier: string;
 }
 
@@ -28,10 +28,10 @@ export interface PaginationProps {
   onPageChange?: (page: number) => void;
 }
 
-export interface TableProps {
-  selectProps?: SelectProps;
-  coloumns: Column[];
-  rows?: any[];
+export interface TableProps<T = unknown> {
+  selectProps?: SelectProps<T>;
+  coloumns: Column<T>[];
+  rows?: T[];
   sorting?: SortingProps;
   paginationProps?: PaginationProps;
   variant?: 'sm' | 'md' | 'lg';

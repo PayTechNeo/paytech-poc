@@ -1,16 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-
-// Button variants
-export const BUTTON_VARIANTS = {
-  CONTAINED: 'contained',
-  OUTLINED: 'outlined',
-  OUTLINED_GRAY: 'outlined_gray',
-  CONTAINED_GRAY: 'contained_gray',
-  TEXT: 'text'
-} as const
-
-type ButtonVariant = typeof BUTTON_VARIANTS[keyof typeof BUTTON_VARIANTS]
+import { BUTTON_VARIANTS, type ButtonVariant } from './constants'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant

@@ -18,9 +18,6 @@ export const ROLE_HIERARCHY: Record<Role, Role[]> = {
 // Define role-based route access
 export const ROUTE_ACCESS: Record<string, Role[]> = {
   '/dashboard': [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.PROVIDER, ROLES.USER],
-  '/users': [ROLES.SUPER_ADMIN, ROLES.ADMIN],
-  '/organization': [ROLES.SUPER_ADMIN, ROLES.ADMIN],
-  '/settings': [ROLES.SUPER_ADMIN, ROLES.ADMIN],
   '/providers': [ROLES.SUPER_ADMIN, ROLES.ADMIN],
   '/reports': [ROLES.SUPER_ADMIN, ROLES.ADMIN],
   '/profile': [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.PROVIDER, ROLES.USER],

@@ -112,7 +112,7 @@ const Input: React.FC<InputProps> = ({
       {name && (
         <div className={clsx("mt-1 sm:mt-2", errorContainerClasses)}>
           <ErrorMessage name={name}>
-            {(msg: any) => (
+            {(msg: string | { label: string }) => (
               <p className="text-xs sm:text-sm text-red-600 text-left">
                 {typeof msg === 'string' ? msg : msg.label}
               </p>

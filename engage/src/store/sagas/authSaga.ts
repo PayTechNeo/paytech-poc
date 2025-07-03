@@ -2,7 +2,6 @@ import { all, put, takeLatest } from 'redux-saga/effects'
 import AuthDataService from '../../services/AuthDataService'
 import { addNotifications } from '../../components/Toaster/ToasterSlice'
 import { TOASTER_VARIANT } from '../../components/Toaster/constants'
-import { userSagaActions } from './usersSaga'
 
 interface LoginPayload {
   email: string
@@ -17,8 +16,7 @@ interface RegisterPayload {
     password: string
     organizationName: string
   }
-  userAgent?: string
-  ipAddress?: string
+
 }
 
 interface LoginAction {
@@ -82,14 +80,14 @@ export const authSagaActions = {
 }
 
 // Registration saga
-function* registerAsync(action: RegisterAction): Generator<any, void, any> {
+function* registerAsync(action: RegisterAction): Generator<unknown, void, unknown> {
   yield put({ type: 'auth/setLoginLoadingState', payload: { state: 'LOADING', message: 'Loading...' } })
 
   try {
-    const { values, userAgent, ipAddress } = action.payload
+    const { values} = action.payload
    
-    
-    const response = yield AuthDataService.register(values, userAgent, ipAddress)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response: any = yield AuthDataService.register(values)
    
 
     if (response.status === 201) {
@@ -109,22 +107,26 @@ function* registerAsync(action: RegisterAction): Generator<any, void, any> {
       // Set navigation path to login
       yield put({ type: 'auth/setNavigationPath', payload: '/login' })
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Registration error:', error)
     
+    const errorMessage = error && typeof error === 'object' && 'response' in error 
+      ? (error as { response: { data: { message: string } } }).response?.data?.message 
+      : 'Registration failed. Please try again.'
+    
     // Show error message
-    yield put({ type: 'auth/setShowErrorMessage', payload: error?.response?.data?.message || 'Registration failed. Please try again.' })
+    yield put({ type: 'auth/setShowErrorMessage', payload: errorMessage })
     
     // Show error toast notification
     yield put(addNotifications({ 
-      message: error?.response?.data?.message || 'Registration failed. Please try again.', 
+      message: errorMessage, 
       variant: TOASTER_VARIANT.ERROR 
     }))
 
     yield put({ type: 'auth/setRegistrationDetails', payload: {
       data: null,
       loading: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error'
     }})
   } finally {
     yield put({ type: 'auth/setLoginLoadingState', payload: { state: 'READY', message: '' } })
@@ -132,11 +134,12 @@ function* registerAsync(action: RegisterAction): Generator<any, void, any> {
 }
 
 // Login saga
-function* loginAsync(action: LoginAction): Generator<any, void, any> {
+function* loginAsync(action: LoginAction): Generator<unknown, void, unknown> {
   yield put({ type: 'auth/setLoginLoadingState', payload: { state: 'LOADING', message: 'Loading...' } })
 
   try {
-    const response = yield AuthDataService.login(action.payload)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response: any = yield AuthDataService.login(action.payload)
    
 
     if (response.data) {
@@ -160,19 +163,19 @@ function* loginAsync(action: LoginAction): Generator<any, void, any> {
         variant: TOASTER_VARIANT.SUCCESS 
       }))
       
-      // Get logged in user info after successful login
-      yield put(userSagaActions.getLoggedInUserInfo())
-      
       // Set navigation path to dashboard
       yield put({ type: 'auth/setNavigationPath', payload: '/dashboard' })
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error && typeof error === 'object' && 'response' in error 
+      ? (error as { response: { data: { message: string } } }).response?.data?.message 
+      : 'Login failed. Please check your credentials.'
    
     yield put(addNotifications({ 
-      message: error?.response?.data?.message || 'Login failed. Please check your credentials.', 
+      message: errorMessage, 
       variant: TOASTER_VARIANT.ERROR 
     }))
-    yield put({ type: 'auth/setShowErrorMessage', payload: error?.response?.data?.message || 'Login failed' })
+    yield put({ type: 'auth/setShowErrorMessage', payload: errorMessage })
     yield put({ type: 'auth/setAuthenticated', payload: false })
   } finally {
     yield put({ type: 'auth/setLoginLoadingState', payload: { state: 'READY', message: '' } })
@@ -188,13 +191,13 @@ function* loginAsync(action: LoginAction): Generator<any, void, any> {
 // }
 
 // Route change saga
-function* routeChangeAsync(): Generator<any, void, any> {
+function* routeChangeAsync(): Generator<unknown, void, unknown> {
   yield put({ type: 'auth/setShowErrorMessage', payload: false })
   yield put({ type: 'auth/setShowSuccessMessage', payload: false })
 }
 
 // Logout saga
-function* logoutAsync(): Generator<any, void, any> {
+function* logoutAsync(): Generator<unknown, void, unknown> {
   try {
     // Clear token from localStorage first
     localStorage.removeItem('token')
@@ -205,7 +208,7 @@ function* logoutAsync(): Generator<any, void, any> {
     
     // Call logout API
     yield AuthDataService.logout()
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Logout error:', error)
     // Even if the API call fails, we still want to clear local state
     localStorage.removeItem('token')

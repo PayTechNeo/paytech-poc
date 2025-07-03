@@ -15,7 +15,7 @@ interface LoadingState {
 }
 
 interface RegistrationDetails {
-  data: any
+  data: unknown
   loading: boolean
   error: string | null
 }

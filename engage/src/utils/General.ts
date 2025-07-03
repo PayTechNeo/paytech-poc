@@ -43,7 +43,7 @@ export const isValidEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
@@ -54,7 +54,7 @@ export const debounce = <T extends (...args: any[]) => any>(
   };
 };
 
-export const toggleObjectInArray = <T extends Record<string, any>>(
+export const toggleObjectInArray = <T extends Record<string, unknown>>(
   array: T[],
   object: T,
   identifier: keyof T

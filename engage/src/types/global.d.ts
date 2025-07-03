@@ -6,14 +6,14 @@ declare module '*.jsx' {
 }
 
 declare module '*.js' {
-  const content: any
+  const content: unknown
   export default content
 }
 
 // Redux store types
 declare global {
   interface Window {
-    __REDUX_DEVTOOLS_EXTENSION__?: any
+    __REDUX_DEVTOOLS_EXTENSION__?: unknown
   }
 }
 

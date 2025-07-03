@@ -1,26 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Button, BUTTON_VARIANTS } from "../button";
 import Checkbox from "../checkbox/Checkbox";
-import { Button } from "../button/Button";
-import { BUTTON_VARIANTS } from "../button/Button";
-import Icons from "../icons/Icons";
+import Icons from "../../assets/svgs";
+import { MET_COLORS } from "../../constants/theme";
 import type { DropdownModalProps, Option } from "../../types/selectDropdown";
 
-// Mock constants - you'll need to replace these with actual imports
-const SOZEN_COLORS = {
-  GRAY: "#6B7280"
-};
-
 // Helper function to replace General.toggleObjectInArray
-const toggleObjectInArray = (array: Option[] = [], object: Option = {} as Option, property: string = "") => {
+const toggleObjectInArray = (array: Option[] = [], object: Option = {} as Option, property: keyof Option = "value") => {
   const arrayClone = [...array];
-  const index = arrayClone.findIndex(item => (item as any)[property] === (object as any)[property]);
-
+  const index = arrayClone.findIndex(item => item[property] === object[property]);
   if (index !== -1) {
     arrayClone.splice(index, 1);
   } else {
     arrayClone.push(object);
   }
-
   return arrayClone;
 };
 
@@ -72,6 +65,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
     };
   }, [isOpen, onCloseCb]);
 
+  const allOptionsLength = allOptions.length;
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry?.isIntersecting) {
@@ -79,16 +73,17 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
       }
     });
 
-    if (lastItemRef.current) {
-      observer.observe(lastItemRef.current);
+    const currentRef = lastItemRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (lastItemRef.current) {
-        observer.unobserve(lastItemRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
-  }, [allOptions.length, onDropdownTouchBottomCb]);
+  }, [allOptionsLength, onDropdownTouchBottomCb]);
 
   useEffect(() => {
     if (Array.isArray(selectedOption)) {
@@ -153,7 +148,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
                   className="w-full flex item-end px-3 sm:px-4 py-2 hover:bg-gray-100 text-blue-600 font-medium text-sm"
                   onClickCb={onAddNewCb || (() => {})}
                 >
-                  <Icons iconName="addIcon" color={SOZEN_COLORS.GRAY} />
+                  <Icons iconName="addIcon" color={MET_COLORS.GRAY} style={{}} height={16} width={16} />
                   <span className="text-sm">{addNewOptBtnLable}</span>
                 </Button>
               </div>
@@ -177,7 +172,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
                       )}
                     />
                   )}
-                  {option.iconName && <Icons iconName={option.iconName} />}
+                  {option.iconName && <Icons iconName={option.iconName} color="" style={{}} height={16} width={16} />}
                   <span className="text-sm truncate">{option.label}</span>
                 </Button>
               ) : (
@@ -189,7 +184,7 @@ const DropdownModal: React.FC<DropdownModalProps> = ({
                     onClickCb={() => selectCb(option)}
                     disabled={disabled}
                   >
-                    {option.iconName && <Icons iconName={option.iconName} />}
+                    {option.iconName && <Icons iconName={option.iconName} color="" style={{}} height={16} width={16} />}
                     <span className="text-sm truncate">{option.label}</span>
                   </Button>
                 )

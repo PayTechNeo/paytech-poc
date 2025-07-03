@@ -27,14 +27,8 @@ class AuthDataService extends DataService {
         return this.post('auth/login', credentials)
     }
 
-    async register(values: RegisterValues, userAgent?: string, ipAddress?: string) {
-        console.log("Registration values:", values)
-        
-        const headers: Record<string, string> = {}
-        if (userAgent) headers['X-User-Agent'] = userAgent
-        if (ipAddress) headers['X-IP-Address'] = ipAddress
-        
-        return this.post('/registration', values, { headers })
+    async register(values: RegisterValues) {
+        return this.post('/registration', values)
     }
 
     async registerVerification(verificationData?: VerificationData) {

@@ -4,10 +4,9 @@ import { Link as RouterLink } from 'react-router-dom'
 import { forwardRef } from 'react'
 import clsx from 'clsx'
 
-interface LinkProps {
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   className?: string
   to: string
-  [key: string]: any
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(

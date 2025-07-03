@@ -14,6 +14,7 @@ interface FieldConfig {
 }
 
 export const getValidationSchema = (fields: FieldConfig[]) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const schemaFields: Record<string, any> = {};
 
   fields.forEach(({ 
@@ -27,6 +28,7 @@ export const getValidationSchema = (fields: FieldConfig[]) => {
     isDropdown = false, 
     isMultiSelect = false 
   }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let fieldSchema: any = Yup.string();
 
     if (isDropdown) {
@@ -37,27 +39,27 @@ export const getValidationSchema = (fields: FieldConfig[]) => {
     } else if (isMultiSelect) {
       fieldSchema = Yup.array().of(Yup.string()).required(`${General.camelToPascalWithSpaces(fieldName)} is required`)
     } else if (isRequired) {
-      fieldSchema = fieldSchema.required(`${General.camelToPascalWithSpaces(fieldName)} is required`);
+      fieldSchema = (fieldSchema as Yup.StringSchema).required(`${General.camelToPascalWithSpaces(fieldName)} is required`);
     }
 
     if (isMinLength) {
-      fieldSchema = fieldSchema.min(3, `${General.camelToPascalWithSpaces(fieldName)} must be at least 3 characters`);
+      fieldSchema = (fieldSchema as Yup.StringSchema).min(3, `${General.camelToPascalWithSpaces(fieldName)} must be at least 3 characters`);
     }
 
     if (isMaxLength) {
-      fieldSchema = fieldSchema.max(isMaxLength, `${General.camelToPascalWithSpaces(fieldName)} must be at most ${isMaxLength} characters`);
+      fieldSchema = (fieldSchema as Yup.StringSchema).max(isMaxLength, `${General.camelToPascalWithSpaces(fieldName)} must be at most ${isMaxLength} characters`);
     }
 
     if (isPassword && regexPattern) {
-      fieldSchema = fieldSchema.matches(regexPattern, `${General.camelToPascalWithSpaces(fieldName)} must contain at least one uppercase letter, one lowercase letter, one number, and one special character`);
+      fieldSchema = (fieldSchema as Yup.StringSchema).matches(regexPattern, `${General.camelToPascalWithSpaces(fieldName)} must contain at least one uppercase letter, one lowercase letter, one number, and one special character`);
     }
 
     if (regexPattern && !isPassword) {
-      fieldSchema = fieldSchema.matches(regexPattern, `${General.camelToPascalWithSpaces(fieldName)} is invalid`);
+      fieldSchema = (fieldSchema as Yup.StringSchema).matches(regexPattern, `${General.camelToPascalWithSpaces(fieldName)} is invalid`);
     }
 
     if (isEmail) {
-      fieldSchema = fieldSchema
+      fieldSchema = (fieldSchema as Yup.StringSchema)
         .email(`${General.camelToPascalWithSpaces(fieldName)} must be a valid email`)
         .matches(
           /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,

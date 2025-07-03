@@ -25,37 +25,6 @@ export interface User {
   organizationName?: string
 }
 
-// Users state interface
-export interface UsersState {
-  loginLoadingState: {
-    state: 'READY' | 'LOADING'
-    message: string
-  }
-  allUsers: Array<{
-    id: string
-    firstName: string
-    lastName: string
-    email: string
-    role: string
-    organization: string
-    department: string
-  }>
-  showErrorMessage?: boolean
-  showSuccessMessage?: boolean
-  navigationPath?: string | null
-  isAuthenticated?: boolean
-  loggedInUserInfo?: {
-    id: string
-    firstName: string
-    lastName: string
-    email: string
-    role: string
-    organization: string
-    department: string
-    status?: string
-  }
-}
-
 // Root state type
 export interface RootState {
   auth?: {
@@ -69,12 +38,12 @@ export interface RootState {
     showSuccessMessage: string | false
     navigationPath: string | null
     registrationDetails: {
-      data: any
+      data: unknown
       loading: boolean
       error: string | null
     }
   }
-  main?: any
+  main?: Record<string, unknown>
   toaster?: {
     notifications: Array<{
       id: string
@@ -82,16 +51,16 @@ export interface RootState {
       variant: 'success' | 'error' | 'warning' | 'info'
     }>
   }
-  users: UsersState
+  dashboard?: Record<string, unknown>
 }
 
 // App dispatch type
-export type AppDispatch = (action: any) => void
+export type AppDispatch = (action: { type: string; payload?: unknown }) => void
 
 // Action types
 export interface Action {
   type: string
-  payload?: any
+  payload?: unknown
 }
 
 // Re-export store types

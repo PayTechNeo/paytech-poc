@@ -29,7 +29,12 @@ const LoginPage: React.FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const auth = useSelector((state: RootState) => state.auth) || {}
-  const { loginLoadingState, showErrorMessage, showSuccessMessage, navigationPath } = auth as any
+  const { loginLoadingState, showErrorMessage, showSuccessMessage, navigationPath } = auth as {
+    loginLoadingState?: { state: 'READY' | 'LOADING'; message: string }
+    showErrorMessage?: string | false
+    showSuccessMessage?: string | false
+    navigationPath?: string | null
+  }
   
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
@@ -52,7 +57,7 @@ const LoginPage: React.FC = () => {
   }, [navigationPath, navigate, dispatch])
 
   const handleSubmit = (values: LoginFormValues) => {
-    dispatch(authSagaActions.login(values) as any)
+    dispatch(authSagaActions.login(values) as { type: string; payload: LoginFormValues })
   }
 
   return (

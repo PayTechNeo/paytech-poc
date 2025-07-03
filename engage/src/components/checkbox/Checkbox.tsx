@@ -1,19 +1,10 @@
 import React from 'react';
 
-const VARIANTS = {
-    SM: "sm",
-    MD: "md",
-    LG: "lg",
-} as const;
-
-type Variant = typeof VARIANTS[keyof typeof VARIANTS];
-
 interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
     label?: string;
     checked?: boolean;
     onChangeCb?: (checked: boolean) => void;
     className?: string;
-    variant?: Variant;
     disabled?: boolean;
 }
 
@@ -22,7 +13,6 @@ const Checkbox: React.FC<CheckboxProps> = ({
     checked, 
     onChangeCb, 
     className, 
-    // variant,
     disabled,
     ...props 
 }) => {

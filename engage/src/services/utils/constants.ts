@@ -10,7 +10,7 @@ const headerContentWithAuthorization: HeaderContent = {
 }
 
 export const customHeaders = (token: string) => {
-  let copiedHeaderContentWithAuthorization: HeaderContent = {
+  const copiedHeaderContentWithAuthorization: HeaderContent = {
     ...headerContentWithAuthorization
   }
   copiedHeaderContentWithAuthorization['Authorization'] = `Bearer ${token}`

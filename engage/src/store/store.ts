@@ -3,10 +3,8 @@ import createSagaMiddleware from 'redux-saga'
 import authReducer from './slices/authSlice'
 import toasterReducer from '../components/Toaster/ToasterSlice'
 import mainReducer from './slices/mainSlice'
-import usersReducer from './slices/usersSlice'
 import dashboardReducer from './slices/dashboardSlice'
 import { rootSaga as authRootSaga } from './sagas/authSaga'
-import { rootSaga as usersRootSaga } from './sagas/usersSaga'
 import { dashboardRootSaga } from './sagas/dashboardSaga'
 
 const sagaMiddleware = createSagaMiddleware()
@@ -16,7 +14,6 @@ const store = configureStore({
         auth: authReducer,
         toaster: toasterReducer,
         main: mainReducer,
-        users: usersReducer,
         dashboard: dashboardReducer
     },
     middleware: (getDefaultMiddleware) => 
@@ -27,7 +24,6 @@ const store = configureStore({
 
 // Run all sagas
 sagaMiddleware.run(authRootSaga)
-sagaMiddleware.run(usersRootSaga)
 sagaMiddleware.run(dashboardRootSaga)
 
 export type RootState = ReturnType<typeof store.getState>

@@ -1,12 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import DataService from '../services/utils/dataservice/DataService';
-import DashboardLayout from '../components/Layout/DashboardLayout';
+import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
 import DashboardPage from './dashboard/Dashboard';
-import UsersPage from './Users/UsersPage';
-import CreateUserPage from './Users/CreateUserPage';
+import SimpleCustomersPage from './Customers/SimpleCustomersPage';
+
+// Layout wrapper component
+const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+	const [sidebarOpen, setSidebarOpen] = useState(false);
+
+	return (
+		<div className="h-screen flex flex-col overflow-hidden bg-gray-100">
+			{/* Top Navbar */}
+			<Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+			
+			{/* Main content area with sidebar and page content */}
+			<div className="flex-1 flex overflow-hidden">
+				{/* Sidebar */}
+				<Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+
+				{/* Page content */}
+				<main className="flex-1 overflow-y-auto px-2 sm:px-4 md:px-6">
+					{children}
+				</main>
+			</div>
+		</div>
+	);
+};
 
 const Main: React.FC = () => {
 	const dispatch = useDispatch()
@@ -16,6 +39,10 @@ const Main: React.FC = () => {
 
 	// Debug logging
 	console.log('Main component - Current location:', location.pathname)
+	console.log('Main component - Current pathname segments:', location.pathname.split('/'))
+	console.log('Main component - All routes:', [
+		'/', 'dashboard', 'customer', 'customer-test', 'transactions', 'merchant', 'reports', 'analytics', 'compliance', 'messages'
+	])
 
 	useEffect(() => {
 		// axios request interceptor
@@ -51,32 +78,42 @@ const Main: React.FC = () => {
 		if (!token) {
 			navigate("/login")
 		}
-	}, [navigate])
+	}, [navigate, dispatch])
 
 	if (!isAuthenticated) {
 		return <div className='text-center'>Loading...</div>
 	}
 
+	// Function to render the appropriate component based on the current path
+	const renderComponent = () => {
+		const pathname = location.pathname;
+		
+		switch (pathname) {
+			case '/dashboard':
+				return <DashboardPage />;
+			case '/customer':
+				return <SimpleCustomersPage />;
+			case '/transactions':
+				return <div className="p-6"><h1 className="text-2xl font-bold">Transactions</h1></div>;
+			case '/merchant':
+				return <div className="p-6"><h1 className="text-2xl font-bold">Merchant</h1></div>;
+			case '/reports':
+				return <div className="p-6"><h1 className="text-2xl font-bold">Reports</h1></div>;
+			case '/analytics':
+				return <div className="p-6"><h1 className="text-2xl font-bold">Analytics</h1></div>;
+			case '/compliance':
+				return <div className="p-6"><h1 className="text-2xl font-bold">Compliance</h1></div>;
+			case '/messages':
+				return <div className="p-6"><h1 className="text-2xl font-bold">Messages</h1></div>;
+			default:
+				return <DashboardPage />;
+		}
+	};
+
 	return (
-		<div className="w-full min-h-screen bg-gray-50">
-			<Routes>
-				<Route path="/" element={<DashboardLayout />}>
-					<Route index element={<DashboardPage />} />
-					<Route path="dashboard" element={<DashboardPage />} />
-					<Route path="customer" element={<div className="p-6"><h1 className="text-2xl font-bold">Customer</h1></div>} />
-					<Route path="transactions" element={<div className="p-6"><h1 className="text-2xl font-bold">Transactions</h1></div>} />
-					<Route path="merchant" element={<div className="p-6"><h1 className="text-2xl font-bold">Merchant</h1></div>} />
-					<Route path="reports" element={<div className="p-6"><h1 className="text-2xl font-bold">Reports</h1></div>} />
-					<Route path="analytics" element={<div className="p-6"><h1 className="text-2xl font-bold">Analytics</h1></div>} />
-					<Route path="compliance" element={<div className="p-6"><h1 className="text-2xl font-bold">Compliance</h1></div>} />
-					<Route path="messages" element={<div className="p-6"><h1 className="text-2xl font-bold">Messages</h1></div>} />
-					<Route path="users" element={<UsersPage />} />
-					<Route path="users/create" element={<CreateUserPage />} />
-					<Route path="users/edit/:id" element={<CreateUserPage />} />
-					<Route path="settings" element={<div className="p-6"><h1 className="text-2xl font-bold">Settings</h1></div>} />
-				</Route>
-			</Routes>
-		</div>
+		<LayoutWrapper>
+			{renderComponent()}
+		</LayoutWrapper>
 	);
 };
 

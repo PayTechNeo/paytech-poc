@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import type { RootState } from '../../types'
 
 const Toaster: React.FC = () => {
     const dispatch = useDispatch()
-    const toasterState = useSelector((state: any) => state.toaster)
-    const notifications = toasterState?.notifications || []
+    const toasterState = useSelector((state: RootState) => state.toaster)
+    const notifications = useMemo(() => toasterState?.notifications || [], [toasterState?.notifications])
 
     useEffect(() => {
         if (notifications.length > 0) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import TableHeader from './TableHeader'
 import TableBody from './TableBody'
 import Pagination from '../Pagination/index';
@@ -10,7 +10,7 @@ const VARIANTS = {
   LG: 'lg',
 } as const;
 
-const Table: React.FC<TableProps> = ({ 
+const Table = <T,>({ 
   selectProps = { 
     isSelectAll: false, 
     onSelectAll: () => { }, 
@@ -27,9 +27,9 @@ const Table: React.FC<TableProps> = ({
   }, 
   variant = 'md', 
   tableHeaderCustomclasses 
-}) => {
+}: TableProps<T>) => {
 
-  const [selectedRows, setSelectedRows] = useState<any[]>([])
+  const [selectedRows, setSelectedRows] = useState<T[]>([])
 
   useEffect(() => {
     if (selectProps.onSelectRowsCb) {

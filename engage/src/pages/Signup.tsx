@@ -108,7 +108,11 @@ const SignupPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const auth = useSelector((state: RootState) => state.auth) || {}
-  const { loginLoadingState, showErrorMessage, navigationPath } = auth as any
+  const { loginLoadingState, showErrorMessage, navigationPath } = auth as {
+    loginLoadingState?: { state: string }
+    showErrorMessage?: string
+    navigationPath?: string | null
+  }
 
   useEffect(() => {
     // Handle navigation to login page after successful registration
@@ -122,7 +126,7 @@ const SignupPage: React.FC = () => {
   const handleSubmit = async (values: SignupFormValues) => {
     try {
       // Dispatch registration action
-      (dispatch as any)(authSagaActions.register({
+      (dispatch as (action: { type: string; payload: unknown }) => void)(authSagaActions.register({
         values: {
           firstName: values[FORM_FIELDS_NAMES.FIRSTNAME],
           lastName: values[FORM_FIELDS_NAMES.LASTNAME],
@@ -131,8 +135,9 @@ const SignupPage: React.FC = () => {
           organizationName: values[FORM_FIELDS_NAMES.ORGANIZATION_NAME]
         }
       }))
-    } catch (err: any) {
-      dispatch(authActions.setShowErrorMessage("Error during registration: " + err.message))
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+      dispatch(authActions.setShowErrorMessage("Error during registration: " + errorMessage))
     }
   }
 

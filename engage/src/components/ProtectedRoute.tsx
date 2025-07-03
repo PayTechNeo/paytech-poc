@@ -1,35 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Navigate, useLocation } from 'react-router-dom'
 import type { RootState } from '../types'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
-  allowedRoles?: string[]
+  requiredRoles?: string[]
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth || { isAuthenticated: false, user: null })
+export function ProtectedRoute({ children, requiredRoles = [] }: ProtectedRouteProps) {
+  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth || { user: null, isAuthenticated: false })
+  const navigate = useNavigate()
   const location = useLocation()
 
-  // If not authenticated, redirect to login
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location } })
+    } else if (requiredRoles.length > 0 && user && !requiredRoles.includes(user.role || '')) {
+      navigate('/unauthorized')
+    }
+  }, [isAuthenticated, user, navigate, location, requiredRoles])
+
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    )
   }
 
-  // If no role restrictions, allow access
-  if (!allowedRoles || allowedRoles.length === 0) {
-    return <>{children}</>
+  if (requiredRoles.length > 0 && user && !requiredRoles.includes(user.role || '')) {
+    return null
   }
 
-  // Check if user has required role
-  const userRole = user?.role
-  if (userRole && allowedRoles.includes(userRole)) {
-    return <>{children}</>
-  }
-
-  // If user doesn't have required role, redirect to dashboard
-  return <Navigate to="/dashboard" replace />
+  return <>{children}</>
 }
 
 export default ProtectedRoute 
